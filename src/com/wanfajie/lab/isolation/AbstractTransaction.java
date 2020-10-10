@@ -1,5 +1,8 @@
 package com.wanfajie.lab.isolation;
 
+import java.sql.SQLException;
+
+import com.wanfajie.lab.db.DBSession;
 import com.wanfajie.lab.db.SessionFactory;
 import com.wanfajie.lab.db.Transaction;
 
@@ -27,10 +30,20 @@ public abstract class AbstractTransaction implements Runnable, Transaction {
 
     @Override
     public void run() {
+        DBSession se;
         try {
-            factory.transaction(this);
+            se = factory.createSession();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return;
+        }
+
+        try {
+            se.transaction(this);
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            factory.releaseSession(se);
         }
     }
 }

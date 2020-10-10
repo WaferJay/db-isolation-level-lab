@@ -10,6 +10,8 @@ public interface DBSession {
     public int delete(String sql) throws SQLException;
 
     public int update(String sql) throws SQLException;
+
+    public void transaction(Transaction trans) throws Exception;
     
     public void commit() throws SQLException;
 

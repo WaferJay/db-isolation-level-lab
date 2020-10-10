@@ -47,6 +47,20 @@ public class DBSessionImpl implements DBSession {
     }
 
     @Override
+    public void transaction(Transaction trans) throws Exception {
+        try {
+            trans.onTransaction(this);
+            this.commit();
+        } finally {
+            try {
+                this.rollback();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
     public void close() throws SQLException {
         connection.close();
     }

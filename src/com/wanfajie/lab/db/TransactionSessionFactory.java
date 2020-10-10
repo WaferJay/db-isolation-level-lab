@@ -46,17 +46,6 @@ public class TransactionSessionFactory implements SessionFactory {
         }
     }
 
-    @Override
-    public void transaction(Transaction trans) throws Exception {
-        DBSession se = createSession();
-        try {
-            trans.onTransaction(se);
-            se.commit();
-        } finally {
-            releaseSession(se);
-        }
-    }
-
     public static class Builder {
         private String url;
         private String user;
